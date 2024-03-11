@@ -1,0 +1,92 @@
+import os
+
+# Fonction pour charger la liste de courses depuis un fichier externe
+def charger_liste():
+    if os.path.exists("liste_courses.txt"):
+        with open("liste_courses.txt", "r") as file:
+            return [line.strip() for line in file.readlines()]
+    else:
+        return []
+
+# Fonction pour sauvegarder la liste de courses dans un fichier externe
+def sauvegarder_liste(liste_courses):
+    with open("liste_courses.txt", "w") as file:
+        for item in liste_courses:
+            file.write(item + "\n")
+
+# Fonction pour afficher la liste de courses
+def afficher_liste(liste_courses):
+    print("Liste de courses :")
+    for index, item in enumerate(liste_courses, start=1):
+        print(f"{index}. {item}")
+    print()
+
+# Fonction pour ajouter un élément à la liste de courses
+def ajouter_element(liste_courses):
+    nouvel_element = input("Entrez le nouvel élément à ajouter : ")
+    liste_courses.append({"nom": nouvel_element, "achete": False})
+    print(f"{nouvel_element} ajouté à la liste de courses.\n")
+
+# Fonction pour supprimer un élément de la liste de courses
+def supprimer_element(liste_courses):
+    afficher_liste(liste_courses)
+    index_supprimer = int(input("Entrez le numéro de l'élément à supprimer : "))
+    if 1 <= index_supprimer <= len(liste_courses):
+        element_supprime = liste_courses.pop(index_supprimer - 1)["nom"]
+        print(f"{element_supprime} supprimé de la liste de courses.\n")
+    else:
+        print("Numéro d'élément invalide.\n")
+
+# Fonction pour marquer un élément comme acheté
+def marquer_achete(liste_courses):
+    afficher_liste(liste_courses)
+    index_achete = int(input("Entrez le numéro de l'élément acheté : "))
+    if 1 <= index_achete <= len(liste_courses):
+        liste_courses[index_achete - 1]["achete"] = True
+        print(f"{liste_courses[index_achete - 1]['nom']} marqué comme acheté.\n")
+    else:
+        print("Numéro d'élément invalide.\n")
+
+# Fonction principale
+def main():
+    liste_courses = charger_liste()  # Chargement de la liste de courses existante
+
+    while True:
+        print("Gestionnaire de Liste de Courses")
+        print("1. Afficher la liste de courses")
+        print("2. Ajouter un élément à la liste")
+        print("3. Supprimer un élément de la liste")
+        print("4. Marquer un élément comme acheté")
+        print("5. Sauvegarder la liste de courses")
+        print("6. Quitter")
+
+        choix = input("Sélectionnez une option (1/2/3/4/5/6) : ")
+
+        if choix == '1':
+            if liste_courses:
+                afficher_liste(liste_courses)
+            else:
+                print("La liste de courses est vide.\n")
+        elif choix == '2':
+            ajouter_element(liste_courses)
+        elif choix == '3':
+            if liste_courses:
+                supprimer_element(liste_courses)
+            else:
+                print("La liste de courses est vide.\n")
+        elif choix == '4':
+            if liste_courses:
+                marquer_achete(liste_courses)
+            else:
+                print("La liste de courses est vide.\n")
+        elif choix == '5':
+            sauvegarder_liste(liste_courses)
+            print("La liste de courses a été sauvegardée.\n")
+        elif choix == '6':
+            print("Au revoir !")
+            break
+        else:
+            print("Option invalide. Veuillez sélectionner 1, 2, 3, 4, 5 ou 6.\n")
+
+if __name__ == "__main__":
+    main()
